@@ -125,6 +125,60 @@ namespace HeyImIn.WebApplication.Controllers
 		}
 
 		/// <summary>
+		///     Adds new appointment finder to the event
+		/// </summary>
+		[HttpPost(nameof(CreateAppointmentFinder))]
+		[ProducesResponseType(typeof(void), 200)]
+		public async Task<IActionResult> CreateAppointmentFinder(AppointmentFinderInformationDto appointmentFinderInformationDto)
+		{
+			// TODO Input validation
+			if (appointmentFinderInformationDto.TimeSlots.Any(a => a.FromDate < DateTime.UtcNow))
+			{
+				return BadRequest(RequestStringMessages.AppointmentsHaveToStartInTheFuture);
+			}
+
+			IDatabaseContext context = _getDatabaseContext();
+			Event @event = await context.Events.Include(e => e.Organizer).FirstOrDefaultAsync(e => e.Id == appointmentFinderInformationDto.EventId);
+
+			if (@event == null)
+			{
+				return BadRequest(RequestStringMessages.EventNotFound);
+			}
+
+			User currentUser = await HttpContext.GetCurrentUserAsync(context);
+
+			if (@event.Organizer != currentUser)
+			{
+				_logger.LogInformation("{0}(): Tried to add appointments to the event {1}, which he's not organizing", nameof(CreateAppointmentFinder), @event.Id);
+
+				return BadRequest(RequestStringMessages.OrganizerRequired);
+			}
+
+			var finder = new AppointmentFinder
+			{
+				Event = @event
+			};
+
+			context.AppointmentFinders.Add(finder);
+
+			foreach (var timeSlot in appointmentFinderInformationDto.TimeSlots)
+			{
+				context.TimeSlots.Add(new Database.Models.TimeSlot
+				{
+					FromDate = timeSlot.FromDate,
+					ToDate = timeSlot.ToDate,
+					AppointmentFinder = finder
+				});
+			}
+
+			await context.SaveChangesAsync();
+
+			_auditLogger.LogInformation("{0}(): Added {1} appointment finders to event {2}", nameof(CreateAppointmentFinder), appointmentFinderInformationDto.TimeSlots.Length, @event.Id);
+
+			return Ok();
+		}
+
+		/// <summary>
 		///     Sets the response to an appointment
 		///     Will add the user to the event if he's not part of it yet
 		/// </summary>

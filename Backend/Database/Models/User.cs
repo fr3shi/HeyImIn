@@ -43,5 +43,7 @@ namespace HeyImIn.Database.Models
 		public virtual ICollection<EventParticipation> EventParticipations { get; set; }
 
 		public virtual ICollection<AppointmentParticipation> AppointmentParticipations { get; set; }
+
+		public virtual ICollection<TimeSlotParticipation> TimeSlotParticipations { get; set; }
 	}
 }

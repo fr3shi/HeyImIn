@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { MatSelectModule } from '@angular/material';
+import {MatDatepickerModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
 
 // Dialogs
 import { AddAppointmentsDialogComponent } from './add-appointments-dialog/add-appointments-dialog.component';
@@ -28,11 +28,16 @@ import { EventChatComponent } from './event-chat/event-chat.component';
 // Other
 import { AuthenticatedLayoutComponent } from './authenticated-layout/authenticated-layout.component';
 import { SharedModule } from '../shared/shared.module';
+import { AppointmentFinderParticipationComponent } from './appointment-finder-participation/appointment-finder-participation.component';
+import { CreateAppointmentFinderComponent } from './create-appointment-finder/create-appointment-finder.component';
+import { CreateAppointmentFinderDialog} from "./create-appointment-finder-dialog/create-appointment-finder-dialog";
+import { AppointmentFinderParticipationTableComponent } from './appointment-finder-participation-table/appointment-finder-participation-table.component';
 
 const dialogs = [
 	AddAppointmentsDialogComponent,
 	AddParticipantDialogComponent,
-	ChangeOrganizerDialogComponent
+	ChangeOrganizerDialogComponent,
+	CreateAppointmentFinderDialog
 ];
 
 const components = [
@@ -57,7 +62,10 @@ const components = [
 @NgModule({
 	declarations: [
 		...components,
-		...dialogs
+		...dialogs,
+		AppointmentFinderParticipationComponent,
+		CreateAppointmentFinderComponent,
+		AppointmentFinderParticipationTableComponent
 	],
 	// Dialog contents have to be specified here
 	entryComponents: [
@@ -65,7 +73,9 @@ const components = [
 	],
 	imports: [
 		SharedModule,
-		MatSelectModule
+		MatSelectModule,
+		MatDatepickerModule,
+        MatNativeDateModule
 	]
 })
 export class AuthenticatedModule {

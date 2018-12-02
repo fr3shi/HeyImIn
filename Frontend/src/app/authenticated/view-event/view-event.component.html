@@ -57,6 +57,27 @@
 				</ng-template>
 			</mat-card-content>
 		</mat-card>
+		<mat-card *ngIf="eventDetails.information.doFindTime" >
+			<mat-card-header>
+				<mat-card-title>Termine finden</mat-card-title>
+			</mat-card-header>
+			<mat-card-content>
+				<mat-accordion>
+					<mat-expansion-panel *ngFor="let finder of eventDetails.actualAppointmentFinders; index as i; trackBy: getAppointmentFinderId" [expanded]="i === 0">
+						<mat-expansion-panel-header>
+							<mat-panel-title>
+								Foo Bar{{finder.fromDate | date:'short'}}
+							</mat-panel-title>
+						</mat-expansion-panel-header>
+						<ng-template matExpansionPanelContent>
+							<appointment-finder-participation-table [timeSlots]="finder.timeSlots">
+
+							</appointment-finder-participation-table>
+						</ng-template>
+					</mat-expansion-panel>
+				</mat-accordion>
+			</mat-card-content>
+		</mat-card>
 		<ng-container *ngIf="currentUserDoesParticipate">
 			<mat-card>
 				<mat-card-header>

@@ -12,6 +12,7 @@
     <PackageProjectUrl></PackageProjectUrl>
     <RepositoryUrl>https://github.com/PascalHonegger/HeyImIn</RepositoryUrl>
     <LangVersion>latest</LangVersion>
+    <UserSecretsId>38e928b6-1412-41aa-a2e5-7fcd883ca993</UserSecretsId>
   </PropertyGroup>
 
   <ItemGroup>

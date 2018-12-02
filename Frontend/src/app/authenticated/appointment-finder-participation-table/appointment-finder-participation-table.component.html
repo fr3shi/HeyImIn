@@ -1,0 +1,9 @@
+<div *ngFor="let header of getColumns()">
+    <b>{{header}}</b>
+    <div *ngFor="let cell of getCellsPerColumn(header)">
+        <div fxLayout="row" fxLayoutAlign="start center">
+          <div>{{cell.fromDate | date:'HH:mm'}} - {{cell.toDate | date:'HH:mm'}}</div>
+          <appointment-participation [currentResponse]="cell.answer"></appointment-participation>
+        </div>
+    </div>
+</div>

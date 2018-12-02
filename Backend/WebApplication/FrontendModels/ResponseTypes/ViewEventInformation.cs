@@ -4,11 +4,12 @@ namespace HeyImIn.WebApplication.FrontendModels.ResponseTypes
 {
 	public class ViewEventInformation : GeneralEventInformation
 	{
-		public ViewEventInformation(string meetingPlace, string description, bool isPrivate, string title, int summaryTimeWindowInHours, int reminderTimeWindowInHours, UserInformation organizer, List<UserInformation> participants)
+		public ViewEventInformation(string meetingPlace, string description, bool isPrivate, bool doFindTime, string title, int summaryTimeWindowInHours, int reminderTimeWindowInHours, UserInformation organizer, List<UserInformation> participants)
 		{
 			MeetingPlace = meetingPlace;
 			Description = description;
 			IsPrivate = isPrivate;
+            DoFindTime = doFindTime;
 			Title = title;
 			SummaryTimeWindowInHours = summaryTimeWindowInHours;
 			ReminderTimeWindowInHours = reminderTimeWindowInHours;

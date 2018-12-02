@@ -109,6 +109,7 @@ namespace HeyImIn.WebApplication.Controllers
 			@event.MeetingPlace = updatedEventInfoDto.MeetingPlace;
 			@event.Description = updatedEventInfoDto.Description;
 			@event.IsPrivate = updatedEventInfoDto.IsPrivate;
+            @event.DoFindTime = updatedEventInfoDto.DoFindTime;
 			@event.ReminderTimeWindowInHours = updatedEventInfoDto.ReminderTimeWindowInHours;
 			@event.SummaryTimeWindowInHours = updatedEventInfoDto.SummaryTimeWindowInHours;
 
@@ -189,6 +190,7 @@ namespace HeyImIn.WebApplication.Controllers
 				Description = generalEventInformation.Description,
 				MeetingPlace = generalEventInformation.MeetingPlace,
 				IsPrivate = generalEventInformation.IsPrivate,
+                DoFindTime = generalEventInformation.DoFindTime,
 				ReminderTimeWindowInHours = generalEventInformation.ReminderTimeWindowInHours,
 				SummaryTimeWindowInHours = generalEventInformation.SummaryTimeWindowInHours,
 				OrganizerId = HttpContext.GetUserId()
@@ -226,7 +228,7 @@ namespace HeyImIn.WebApplication.Controllers
 			EditEventDetails @event = await context.Events
 				.Where(e => (e.Id == eventId) && (e.OrganizerId == currentUserId))
 				.Select(e => new EditEventDetails(
-					new GeneralEventInformation(e.Title, e.MeetingPlace, e.Description, e.IsPrivate, e.ReminderTimeWindowInHours, e.SummaryTimeWindowInHours),
+					new GeneralEventInformation(e.Title, e.MeetingPlace, e.Description, e.IsPrivate, e.DoFindTime, e.ReminderTimeWindowInHours, e.SummaryTimeWindowInHours),
 					e.Appointments
 						.Where(a => a.StartTime >= DateTime.UtcNow)
 						.OrderBy(a => a.StartTime)
@@ -237,10 +239,15 @@ namespace HeyImIn.WebApplication.Controllers
 								.Select(ap => new AppointmentParticipationInformation(ap.ParticipantId, ap.AppointmentParticipationAnswer))
 								.ToList()))
 						.ToList(),
+					e.AppointmentFinders
+						.Select(a => new AppointmentFinderDetails(
+							a.Id,
+							a.TimeSlots.Select(t => new TimeSlotDetails(t.Id, t.FromDate, t.ToDate)).ToList()
+						)).ToList(),
 					e.EventParticipations
 						.Select(ep => new UserInformation(ep.ParticipantId, ep.Participant.FullName, ep.Participant.Email))
 						.ToList()))
-				.SingleOrDefaultAsync();
+				.FirstOrDefaultAsync();
 
 			if (@event == null)
 			{

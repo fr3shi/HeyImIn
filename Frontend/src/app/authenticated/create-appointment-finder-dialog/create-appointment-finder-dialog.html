@@ -1,0 +1,27 @@
+<mat-dialog-content>
+	<form [formGroup]="form" fxFlex fxLayout="column" fxAlign="start stretch" fxLayoutGap="20">
+		<h2 mat-dialog-title>Termine hinzufügen</h2>
+		<mat-form-field>
+			<input placeholder="Von" formControlName="fromDateCtrl" matInput [matDatepicker]="fromDatepicker">
+			<mat-datepicker-toggle matSuffix [for]="fromDatepicker"></mat-datepicker-toggle>
+			<mat-datepicker #fromDatepicker></mat-datepicker>
+		</mat-form-field>
+		<mat-form-field>
+			<input placeholder="Bis" formControlName="toDateCtrl" matInput [matDatepicker]="toDatepicker">
+			<mat-datepicker-toggle matSuffix [for]="toDatepicker"></mat-datepicker-toggle>
+			<mat-datepicker #toDatepicker></mat-datepicker>
+		</mat-form-field>
+		<div fxLayout="row" fxLayoutGap="20">
+			<mat-form-field>
+				<input placeholder="Von Zeit" type="time" formControlName="fromTimeCtrl" matInput>
+			</mat-form-field>
+			<mat-form-field>
+				<input placeholder="Bis Zeit" type="time" formControlName="toTimeCtrl" matInput>
+			</mat-form-field>
+		</div>
+	</form>
+</mat-dialog-content>
+<mat-dialog-actions>
+	<button mat-raised-button mat-dialog-close>Abbrechen</button>
+	<button mat-raised-button (click)="parseAndReturnFinder()" color="primary" [disabled]="!form.valid">Starten</button>
+</mat-dialog-actions>

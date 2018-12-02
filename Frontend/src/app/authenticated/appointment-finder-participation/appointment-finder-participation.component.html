@@ -1,0 +1,28 @@
+<table *ngIf="loaded" [hidden]="calendarType != 'month'">
+  <tr *ngFor="let day of calendar.days; let i = index">
+    <ng-template [ngIf]="i % 7 == 0">
+      <!-- Sunday, Monday, Tuesday, Wednesday, Thursday, Friday, Saturday -->
+      <td *ngFor="let day of week; let j = index">
+      <div [class.readonly]="readonly" [class.editable]="!readonly"
+           ngClass.xs="small" ngClass.sm="medium" ngClass.gt-sm="large"
+           fxLayout="row" fxLayoutAlign="start center">
+        <button mat-icon-button [class.accepted]="accepted" (click)="accept($event, j)">
+          <mat-icon>check_circle</mat-icon>
+        </button>
+        <button mat-icon-button [class.declined]="declined" (click)="decline($event, j)">
+          <mat-icon>remove_circle</mat-icon>
+        </button>
+        <button mat-icon-button [class.not-answered]="noAnswer" (click)="removeAnswer($event,j )">
+          <mat-icon>help</mat-icon>
+        </button>
+      </div>
+    </td>
+    </ng-template>
+  </tr>
+</table>
+
+
+
+
+
+

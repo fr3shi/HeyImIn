@@ -3,6 +3,7 @@ export interface GeneralEventInformation {
 	meetingPlace: string;
 	description: string;
 	isPrivate: boolean;
+    doFindTime: boolean;
 	reminderTimeWindowInHours: number;
 	summaryTimeWindowInHours: number;
 }

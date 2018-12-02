@@ -12,6 +12,8 @@ import { GeneralEventInformation } from '../../shared/server-model/general-event
 import { EditEventDetails } from '../../shared/server-model/edit-event-details.model';
 import { AppointmentParticipationAnswer } from '../../shared/server-model/appointment-participation-answer.model';
 import { ChangeOrganizerDialogComponent, ChangeOrganizerDialogParameter } from '../change-organizer-dialog/change-organizer-dialog.component';
+import { CreateAppointmentFinderDialog} from "../create-appointment-finder-dialog/create-appointment-finder-dialog";
+import {AppointmentFinderInformation} from "../../shared/server-model/appointment-finder-information.model";
 
 @Component({
 	styleUrls: ['./edit-event.component.scss'],
@@ -78,22 +80,41 @@ export class EditEventComponent {
 	}
 
 	public async addAppointments() {
-		const newAppointments = await this.dialog
-			.open(AddAppointmentsDialogComponent, {
-				closeOnNavigation: true,
-				width: '400px',
-				minHeight: '0'
-			}).afterClosed().toPromise();
+        const newAppointments = await this.dialog
+            .open(AddAppointmentsDialogComponent, {
+                closeOnNavigation: true,
+                width: '400px',
+                minHeight: '0'
+            }).afterClosed().toPromise();
 
-		if (newAppointments) {
-			this.organizeAppointmentServer.addAppointments(this.eventId, newAppointments).subscribe(
-				() => {
-					// Reload data to include newly added appointments
-					this.loadEventDetails();
-				}
-			);
-		}
-	}
+        if (newAppointments) {
+            this.organizeAppointmentServer.addAppointments(this.eventId, newAppointments).subscribe(
+                () => {
+                    // Reload data to include newly added appointments
+                    this.loadEventDetails();
+                }
+            );
+        }
+    }
+
+    public async createAppointmentFinder() {
+        const newAppointmentFinder = await this.dialog
+            .open<CreateAppointmentFinderDialog, void, AppointmentFinderInformation>(CreateAppointmentFinderDialog, {
+                closeOnNavigation: true,
+                width: '400px',
+                minHeight: '0'
+            }).afterClosed().toPromise();
+
+        console.warn(newAppointmentFinder);
+        if (newAppointmentFinder) {
+            this.organizeAppointmentServer.createAppointmentFinder(this.eventId, newAppointmentFinder).subscribe(
+                () => {
+                    // Reload data to include newly added appointments
+                    this.loadEventDetails();
+                }
+            );
+        }
+    }
 
 	public async inviteParticipants() {
 		const emailsToInvite = await this.dialog

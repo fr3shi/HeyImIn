@@ -52,7 +52,7 @@ namespace HeyImIn.WebApplication.Controllers
 				e => (e.OrganizerId == currentUserId) || e.EventParticipations.Select(ep => ep.ParticipantId).Contains(currentUserId));
 			List<EventOverviewInformation> publicEvents = await GetAndFilterEvents(e => !e.IsPrivate && (e.OrganizerId != currentUserId) && !e.EventParticipations.Select(ep => ep.ParticipantId).Contains(currentUserId));
 
-			List<EventOverviewInformation> yourEventInformations = yourEvents
+            List<EventOverviewInformation> yourEventInformations = yourEvents
 				.OrderBy(e => e.LatestAppointmentDetails?.StartTime ?? DateTime.MaxValue)
 				.ToList();
 			List<EventOverviewInformation> publicEventInformations = publicEvents
@@ -71,6 +71,7 @@ namespace HeyImIn.WebApplication.Controllers
 							e.MeetingPlace,
 							e.Description,
 							e.IsPrivate,
+							e.DoFindTime,
 							e.Title,
 							e.SummaryTimeWindowInHours,
 							e.ReminderTimeWindowInHours,
@@ -116,6 +117,7 @@ namespace HeyImIn.WebApplication.Controllers
 						e.MeetingPlace,
 						e.Description,
 						e.IsPrivate,
+						e.DoFindTime,
 						e.Title,
 						e.SummaryTimeWindowInHours,
 						e.ReminderTimeWindowInHours,
@@ -132,11 +134,24 @@ namespace HeyImIn.WebApplication.Controllers
 								.Select(ap => new AppointmentParticipationInformation(ap.ParticipantId, ap.AppointmentParticipationAnswer))
 								.ToList()))
 						.ToList(),
+					e.AppointmentFinders
+						.Select(a => new AppointmentFinderDetails(
+							a.Id,
+							a.TimeSlots.Select(t => new TimeSlotDetails(
+								t.Id,
+								t.FromDate,
+								t.ToDate,
+								t.TimeSlotParticipations
+									.Where(tsp => tsp.ParticipantId == currentUserId)
+									.Select(tsp => tsp.AppointmentParticipationAnswer)
+									.FirstOrDefault()
+							)).ToList()
+						)).ToList(),
 					e.EventParticipations
 						.Where(ep => ep.ParticipantId == currentUserId)
 						.Select(ep => new NotificationConfigurationResponse(ep.SendReminderEmail, ep.SendSummaryEmail, ep.SendLastMinuteChangesEmail))
 						.FirstOrDefault()))
-				.SingleOrDefaultAsync();
+				.FirstOrDefaultAsync();
 
 			if (@event == null)
 			{

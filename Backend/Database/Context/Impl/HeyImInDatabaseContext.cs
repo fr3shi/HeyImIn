@@ -49,21 +49,29 @@ namespace HeyImIn.Database.Context.Impl
 			modelBuilder.Entity<User>().HasMany(u => u.Sessions).WithOne(p => p.User).OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<User>().HasMany(u => u.AppointmentParticipations).WithOne(p => p.Participant).OnDelete(DeleteBehavior.Restrict);
 			modelBuilder.Entity<User>().HasMany(u => u.EventParticipations).WithOne(p => p.Participant).OnDelete(DeleteBehavior.Restrict);
+			modelBuilder.Entity<User>().HasMany(u => u.TimeSlotParticipations).WithOne(p => p.Participant).OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<User>().HasMany(u => u.OrganizedEvents).WithOne(p => p.Organizer).OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<Event>().HasMany(e => e.EventInvitations).WithOne(p => p.Event).OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<Event>().HasMany(e => e.ChatMessages).WithOne(p => p.Event).OnDelete(DeleteBehavior.Cascade);
 			modelBuilder.Entity<Event>().HasMany(e => e.EventParticipations).WithOne(p => p.Event).OnDelete(DeleteBehavior.Restrict);
 			modelBuilder.Entity<Event>().HasMany(e => e.Appointments).WithOne(p => p.Event).OnDelete(DeleteBehavior.Restrict);
+			modelBuilder.Entity<Event>().HasMany(e => e.AppointmentFinders).WithOne(p => p.Event).OnDelete(DeleteBehavior.Cascade);
 
 			modelBuilder.Entity<Appointment>().HasMany(a => a.AppointmentParticipations).WithOne(p => p.Appointment).OnDelete(DeleteBehavior.Restrict);
 
 			modelBuilder.Entity<AppointmentParticipation>().HasIndex(a => new { a.ParticipantId, a.AppointmentId }).IsUnique();
 
+			modelBuilder.Entity<TimeSlotParticipation>().HasIndex(a => new { a.Id, a.ParticipantId }).IsUnique();
+
 			modelBuilder.Entity<EventParticipation>().HasIndex(e => new { e.ParticipantId, e.EventId }).IsUnique();
 
 			modelBuilder.Entity<ChatMessage>().HasIndex(c => c.SentDate);
 			modelBuilder.Entity<ChatMessage>().HasOne(c => c.Author).WithMany(a => a.ChatMessages).OnDelete(DeleteBehavior.Cascade);
+
+			modelBuilder.Entity<AppointmentFinder>().HasMany(apf => apf.TimeSlots).WithOne(t => t.AppointmentFinder).OnDelete(DeleteBehavior.Cascade);
+
+			// TODO Extend
 		}
 
 		// Main tables
@@ -71,6 +79,10 @@ namespace HeyImIn.Database.Context.Impl
 		public virtual DbSet<User> Users { get; set; }
 
 		public virtual DbSet<Appointment> Appointments { get; set; }
+
+		public virtual DbSet<AppointmentFinder> AppointmentFinders { get; set; }
+
+		public virtual DbSet<TimeSlot> TimeSlots { get; set; }
 
 		public virtual DbSet<Event> Events { get; set; }
 
@@ -80,6 +92,8 @@ namespace HeyImIn.Database.Context.Impl
 
 		// Many-To-Many relation tables
 		public virtual DbSet<AppointmentParticipation> AppointmentParticipations { get; set; }
+
+		public virtual DbSet<TimeSlotParticipation> TimeSlotParticipations { get; set; }
 
 		public virtual DbSet<EventParticipation> EventParticipations { get; set; }
 

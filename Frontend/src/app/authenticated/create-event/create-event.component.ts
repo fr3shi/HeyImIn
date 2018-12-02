@@ -13,6 +13,7 @@ export class CreateEventComponent {
 		meetingPlace: '',
 		description: '',
 		isPrivate: false,
+		doFindTime: false,
 		reminderTimeWindowInHours: 48,
 		summaryTimeWindowInHours: 4
 	};

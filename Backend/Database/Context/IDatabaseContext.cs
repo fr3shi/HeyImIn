@@ -35,6 +35,10 @@ namespace HeyImIn.Database.Context
 
 		DbSet<Appointment> Appointments { get; }
 
+		DbSet<AppointmentFinder> AppointmentFinders { get; }
+
+		DbSet<TimeSlot> TimeSlots { get; }
+
 		DbSet<Event> Events { get; }
 
 		DbSet<Session> Sessions { get; }
@@ -43,6 +47,8 @@ namespace HeyImIn.Database.Context
 
 		// Many-To-Many relation tables
 		DbSet<AppointmentParticipation> AppointmentParticipations { get; }
+
+		DbSet<TimeSlotParticipation> TimeSlotParticipations { get; }
 
 		DbSet<EventParticipation> EventParticipations { get; }
 

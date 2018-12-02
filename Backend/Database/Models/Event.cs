@@ -46,11 +46,17 @@ namespace HeyImIn.Database.Models
 		/// </summary>
 		public bool IsPrivate { get; set; }
 
-		/// <summary>
-		///     The number of hours before an <see cref="Appointment" /> where the <see cref="EventParticipations" /> get a
-		///     reminder email
-		/// </summary>
-		[Required]
+
+        /// <summary>
+        ///     Whether the actual time of an event should be evaluated upfront.
+        /// </summary>
+        public bool DoFindTime { get; set; }
+
+        /// <summary>
+        ///     The number of hours before an <see cref="Appointment" /> where the <see cref="EventParticipations" /> get a
+        ///     reminder email
+        /// </summary>
+        [Required]
 		[Range(FieldLengths.RealisticMinimumHours, FieldLengths.RealisticMaximumHours)]
 		public int ReminderTimeWindowInHours { get; set; }
 
@@ -64,6 +70,8 @@ namespace HeyImIn.Database.Models
 		public int SummaryTimeWindowInHours { get; set; }
 
 		public virtual ICollection<Appointment> Appointments { get; set; }
+
+		public virtual ICollection<AppointmentFinder> AppointmentFinders { get; set; }
 
 		public virtual ICollection<EventParticipation> EventParticipations { get; set; }
 

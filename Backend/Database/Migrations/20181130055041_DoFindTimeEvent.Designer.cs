@@ -4,14 +4,16 @@ using HeyImIn.Database.Context.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeyImIn.Database.Migrations
 {
     [DbContext(typeof(HeyImInDatabaseContext))]
-    partial class HeyImInDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181130055041_DoFindTimeEvent")]
+    partial class DoFindTimeEvent
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -34,21 +36,6 @@ namespace HeyImIn.Database.Migrations
                     b.HasIndex("EventId");
 
                     b.ToTable("Appointments");
-                });
-
-            modelBuilder.Entity("HeyImIn.Database.Models.AppointmentFinder", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("EventId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("EventId");
-
-                    b.ToTable("AppointmentFinders");
                 });
 
             modelBuilder.Entity("HeyImIn.Database.Models.AppointmentParticipation", b =>
@@ -221,49 +208,6 @@ namespace HeyImIn.Database.Migrations
                     b.ToTable("Sessions");
                 });
 
-            modelBuilder.Entity("HeyImIn.Database.Models.TimeSlot", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int>("AppointmentFinderId");
-
-                    b.Property<DateTime>("FromDate");
-
-                    b.Property<DateTime>("ToDate");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("AppointmentFinderId");
-
-                    b.ToTable("TimeSlots");
-                });
-
-            modelBuilder.Entity("HeyImIn.Database.Models.TimeSlotParticipation", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<int?>("AppointmentParticipationAnswer");
-
-                    b.Property<int>("ParticipantId");
-
-                    b.Property<int>("TimeSlotId");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("ParticipantId");
-
-                    b.HasIndex("TimeSlotId");
-
-                    b.HasIndex("Id", "ParticipantId")
-                        .IsUnique();
-
-                    b.ToTable("TimeSlotParticipations");
-                });
-
             modelBuilder.Entity("HeyImIn.Database.Models.User", b =>
                 {
                     b.Property<int>("Id")
@@ -296,14 +240,6 @@ namespace HeyImIn.Database.Migrations
                         .WithMany("Appointments")
                         .HasForeignKey("EventId")
                         .OnDelete(DeleteBehavior.Restrict);
-                });
-
-            modelBuilder.Entity("HeyImIn.Database.Models.AppointmentFinder", b =>
-                {
-                    b.HasOne("HeyImIn.Database.Models.Event", "Event")
-                        .WithMany("AppointmentFinders")
-                        .HasForeignKey("EventId")
-                        .OnDelete(DeleteBehavior.Cascade);
                 });
 
             modelBuilder.Entity("HeyImIn.Database.Models.AppointmentParticipation", b =>
@@ -374,27 +310,6 @@ namespace HeyImIn.Database.Migrations
                     b.HasOne("HeyImIn.Database.Models.User", "User")
                         .WithMany("Sessions")
                         .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HeyImIn.Database.Models.TimeSlot", b =>
-                {
-                    b.HasOne("HeyImIn.Database.Models.AppointmentFinder", "AppointmentFinder")
-                        .WithMany("TimeSlots")
-                        .HasForeignKey("AppointmentFinderId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("HeyImIn.Database.Models.TimeSlotParticipation", b =>
-                {
-                    b.HasOne("HeyImIn.Database.Models.User", "Participant")
-                        .WithMany("TimeSlotParticipations")
-                        .HasForeignKey("ParticipantId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("HeyImIn.Database.Models.TimeSlot", "TimeSlot")
-                        .WithMany("TimeSlotParticipations")
-                        .HasForeignKey("TimeSlotId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });
 #pragma warning restore 612, 618

@@ -40,6 +40,7 @@ namespace HeyImIn.WebApplication.Tests.Controllers
 				MeetingPlace = "Somewhere",
 				Organizer = organizer,
 				IsPrivate = isPrivate,
+                DoFindTime = false,
 				ReminderTimeWindowInHours = 10,
 				SummaryTimeWindowInHours = 5
 			};

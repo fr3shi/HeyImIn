@@ -10,12 +10,13 @@ namespace HeyImIn.WebApplication.FrontendModels
 			
 		}
 
-		public GeneralEventInformation(string title, string meetingPlace, string description, bool isPrivate, int reminderTimeWindowInHours, int summaryTimeWindowInHours)
+		public GeneralEventInformation(string title, string meetingPlace, string description, bool isPrivate, bool doFindTime, int reminderTimeWindowInHours, int summaryTimeWindowInHours)
 		{
 			Title = title;
 			MeetingPlace = meetingPlace;
 			Description = description;
 			IsPrivate = isPrivate;
+            DoFindTime = doFindTime;
 			ReminderTimeWindowInHours = reminderTimeWindowInHours;
 			SummaryTimeWindowInHours = summaryTimeWindowInHours;
 		}
@@ -34,7 +35,9 @@ namespace HeyImIn.WebApplication.FrontendModels
 
 		public bool IsPrivate { get; set; }
 
-		[Range(0, FieldLengths.RealisticMaximumHours)]
+        public bool DoFindTime { get; set; }
+
+        [Range(0, FieldLengths.RealisticMaximumHours)]
 		public int ReminderTimeWindowInHours { get; set; }
 
 		[Range(0, FieldLengths.RealisticMaximumHours)]

@@ -30,6 +30,10 @@ export class OrganizeEventClient extends ServerClientBase {
 		return this.httpClient.post<void>(this.baseUrl + '/CreateEvent', eventInfo);
 	}
 
+    public createEventFinder(eventInfo: GeneralEventInformation) {
+        return this.httpClient.post<void>(this.baseUrl + '/CreateEventFinder', eventInfo);
+    }
+
 	public getEditDetails(eventId: number) {
 		return this.httpClient.get<EditEventDetails>(this.baseUrl + '/GetEditDetails', {
 			params: new HttpParams({ fromObject: { eventId: eventId.toString() } })

@@ -5,7 +5,7 @@ namespace HeyImIn.WebApplication.FrontendModels.ResponseTypes_Fallback
 {
 	public class ViewEventInformation : GeneralEventInformation
 	{
-		public ViewEventInformation(int organizerId, string organizerName, string meetingPlace, string description, int totalParticipants, bool isPrivate, bool currentUserDoesParticipate, string title, int summaryTimeWindowInHours, int reminderTimeWindowInHours)
+		public ViewEventInformation(int organizerId, string organizerName, string meetingPlace, string description, int totalParticipants, bool isPrivate, bool doFindTime, bool currentUserDoesParticipate, string title, int summaryTimeWindowInHours, int reminderTimeWindowInHours)
 		{
 			OrganizerId = organizerId;
 			OrganizerName = organizerName;
@@ -13,6 +13,7 @@ namespace HeyImIn.WebApplication.FrontendModels.ResponseTypes_Fallback
 			Description = description;
 			TotalParticipants = totalParticipants;
 			IsPrivate = isPrivate;
+            DoFindTime = doFindTime;
 			CurrentUserDoesParticipate = currentUserDoesParticipate;
 			Title = title;
 			SummaryTimeWindowInHours = summaryTimeWindowInHours;
@@ -23,7 +24,7 @@ namespace HeyImIn.WebApplication.FrontendModels.ResponseTypes_Fallback
 		{
 			bool currentUserDoesParticipate = @event.EventParticipations.Select(p => p.ParticipantId).Contains(currentUserId);
 
-			return new ViewEventInformation(@event.OrganizerId, @event.Organizer.FullName, @event.MeetingPlace, @event.Description, @event.EventParticipations.Count, @event.IsPrivate, currentUserDoesParticipate, @event.Title, @event.SummaryTimeWindowInHours, @event.ReminderTimeWindowInHours);
+			return new ViewEventInformation(@event.OrganizerId, @event.Organizer.FullName, @event.MeetingPlace, @event.Description, @event.EventParticipations.Count, @event.IsPrivate, @event.DoFindTime, currentUserDoesParticipate, @event.Title, @event.SummaryTimeWindowInHours, @event.ReminderTimeWindowInHours);
 		}
 
 		public int OrganizerId { get; }

@@ -26,6 +26,7 @@ export class EditGeneralEventInfoComponent {
 			meetingPlaceCtrl: info.meetingPlace,
 			descriptionCtrl: info.description,
 			isPrivateCtrl: info.isPrivate,
+            doFindTimeCtrl: info.doFindTime,
 			reminderCtrl: info.reminderTimeWindowInHours,
 			summaryCtrl: info.summaryTimeWindowInHours,
 		});
@@ -41,6 +42,7 @@ export class EditGeneralEventInfoComponent {
 			meetingPlace: this.form.get('meetingPlaceCtrl').value,
 			description: this.form.get('descriptionCtrl').value,
 			isPrivate: this.form.get('isPrivateCtrl').value,
+            doFindTime: this.form.get('doFindTimeCtrl').value,
 			reminderTimeWindowInHours: this.form.get('reminderCtrl').value,
 			summaryTimeWindowInHours: this.form.get('summaryCtrl').value
 		};
@@ -52,6 +54,7 @@ export class EditGeneralEventInfoComponent {
 						meetingPlaceCtrl: ['', [Validators.required, Validators.maxLength(Constants.meetingPlaceMaxLength)]],
 						descriptionCtrl: ['', [Validators.required, Validators.maxLength(Constants.descriptionMaxLength)]],
 						isPrivateCtrl: [false],
+                        doFindTimeCtrl: [false],
 						reminderCtrl: [0,
 							[Validators.required, Validators.min(Constants.realisticMinimumHours), Validators.max(Constants.realisticMaximumHours)]],
 						summaryCtrl: [0,
