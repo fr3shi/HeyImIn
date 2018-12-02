@@ -1,9 +1,19 @@
-<div *ngFor="let header of getColumns()">
-    <b>{{header}}</b>
-    <div *ngFor="let cell of getCellsPerColumn(header)">
-        <div fxLayout="row" fxLayoutAlign="start center">
-          <div>{{cell.fromDate | date:'HH:mm'}} - {{cell.toDate | date:'HH:mm'}}</div>
-          <appointment-participation [currentResponse]="cell.answer"></appointment-participation>
-        </div>
-    </div>
-</div>
+<table mat-table [dataSource]="dataSource" fxFlex>
+
+    <!-- Time Column -->
+    <ng-container matColumnDef="time">
+        <th mat-header-cell *matHeaderCellDef> Time </th>
+        <td mat-cell *matCellDef="let element"> {{element.time}} </td>
+    </ng-container>
+
+    <ng-container [matColumnDef]="column" *ngFor="let column of getColumns()">
+        <th mat-header-cell *matHeaderCellDef> {{column}} </th>
+        <td mat-cell *matCellDef="let element">
+            <mat-checkbox [(checked)]="element.values[column]">
+            </mat-checkbox>
+        </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns()"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns();"></tr>
+</table>

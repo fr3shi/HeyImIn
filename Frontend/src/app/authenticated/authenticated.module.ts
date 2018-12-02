@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import {MatDatepickerModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
+import {MatCheckboxModule, MatDatepickerModule, MatNativeDateModule, MatSelectModule} from '@angular/material';
 
 // Dialogs
 import { AddAppointmentsDialogComponent } from './add-appointments-dialog/add-appointments-dialog.component';
@@ -75,7 +75,8 @@ const components = [
 		SharedModule,
 		MatSelectModule,
 		MatDatepickerModule,
-        MatNativeDateModule
+        MatNativeDateModule,
+		MatCheckboxModule
 	]
 })
 export class AuthenticatedModule {

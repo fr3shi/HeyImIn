@@ -1,6 +1,8 @@
 import {Component, Input} from '@angular/core';
 import {TimeSlotDetails} from "../../shared/server-model/timeslot-details.model";
 import {compareAsc, format} from "date-fns";
+import {MatTableDataSource} from "@angular/material";
+import {Accepted} from "../../shared/server-model/appointment-participation-answer.model";
 
 @Component({
   selector: 'appointment-finder-participation-table',
@@ -22,10 +24,19 @@ export class AppointmentFinderParticipationTableComponent {
     this.updateColumnGroups();
   }
 
+  displayedColumns() {
+    return ['time'].concat(this.getColumns());
+  }
+  dataSource: MatTableDataSource<TableElement> | null = null;
+
   constructor() { }
 
   getColumns() {
       return Object.keys(this._columnGroups);
+  }
+
+  getRows() {
+    return this._columnGroups[0];
   }
 
   getCellsPerColumn(column : string) {
@@ -36,13 +47,56 @@ export class AppointmentFinderParticipationTableComponent {
     this._columnGroups = {};
     const sortedTimeSlots = this.timeSlots.slice().sort((a, b) => compareAsc(a.fromDate, b.fromDate));
 
+    const rows: { [key: string]: {[key: string]: boolean } } = {};
     for(const timeslot of sortedTimeSlots){
-      const date = format(timeslot.fromDate, 'dd.MM.yyyy');
+      const date = format(timeslot.fromDate, 'dd.MM.');
+      const fromTime = format(timeslot.fromDate, 'HH:mm');
+      const toTime = format(timeslot.toDate, 'HH:mm');
+
       if(this._columnGroups.hasOwnProperty(date)){
         this._columnGroups[date].push(timeslot);
       } else {
         this._columnGroups[date] = [timeslot]
       }
+
+      const time = `${fromTime} - ${toTime}`;
+
+      if (!rows.hasOwnProperty((time))) {
+        rows[time] = {};
+      }
+
+      rows[time][date] = timeslot.answer === Accepted;
     }
+
+    /* const rows: { [key: string]: boolean[] };
+
+    for(const timeslot of sortedTimeSlots) {
+      const fromTime = format(timeslot.fromDate, 'HH:mm');
+      const toTime = format(timeslot.toDate, 'HH:mm');
+
+      const time = `${fromTime} - ${toTime}`;
+      if (rows.hasOwnProperty(time)) {
+        rows[time].push(timeslot.answer === Accepted);
+      } else {
+        rows[time] = [timeslot.answer === Accepted]
+      }
+    }*/
+
+    const rowTableElements: TableElement[] = [];
+    for(const time of Object.keys(rows)) {
+      rowTableElements.push({
+        time,
+        values: rows[time]
+      });
+    }
+
+    this.dataSource = new MatTableDataSource<TableElement>(rowTableElements)
+  }
+}
+
+export interface TableElement {
+  time: string;
+  values: {
+    [key: string]: boolean
   }
 }
