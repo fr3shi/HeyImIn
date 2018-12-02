@@ -242,7 +242,9 @@ namespace HeyImIn.WebApplication.Controllers
 					e.AppointmentFinders
 						.Select(a => new AppointmentFinderDetails(
 							a.Id,
-							a.TimeSlots.Select(t => new TimeSlotDetails(t.Id, t.FromDate, t.ToDate)).ToList()
+							a.TimeSlots.Select(t => new TimeSlotDetails(t.Id, t.FromDate, t.ToDate)).ToList(),
+							a.FromDate,
+							a.ToDate
 						)).ToList(),
 					e.EventParticipations
 						.Select(ep => new UserInformation(ep.ParticipantId, ep.Participant.FullName, ep.Participant.Email))

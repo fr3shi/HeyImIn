@@ -10,6 +10,10 @@ namespace HeyImIn.WebApplication.FrontendModels.ParameterTypes
 		[Required]
 		[MinLength(1)]
 		public TimeSlot[] TimeSlots { get; set; }
+		[Required]
+		public DateTime FromDate { get; set; }
+		[Required]
+		public DateTime ToDate { get; set; }
 	}
 
 	public class TimeSlot

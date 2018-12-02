@@ -6,6 +6,6 @@ import { AppointmentFinderDetails} from "./appointment-finder-details.model";
 export interface EditEventDetails {
 	information: GeneralEventInformation;
 	upcomingAppointments: ReadonlyArray<AppointmentDetails>;
-    actualFinders: ReadonlyArray<AppointmentFinderDetails>;
+  	actualAppointmentFinders: ReadonlyArray<AppointmentFinderDetails>;
 	participants: ReadonlyArray<UserInformation>;
 }

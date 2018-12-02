@@ -4,14 +4,16 @@ using HeyImIn.Database.Context.Impl;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 namespace HeyImIn.Database.Migrations
 {
     [DbContext(typeof(HeyImInDatabaseContext))]
-    partial class HeyImInDatabaseContextModelSnapshot : ModelSnapshot
+    [Migration("20181202182736_FinderFieldsFromTo")]
+    partial class FinderFieldsFromTo
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -47,6 +49,11 @@ namespace HeyImIn.Database.Migrations
                     b.Property<DateTime>("FromDate");
 
                     b.Property<string>("FromTime")
+                        .IsRequired();
+
+                    b.Property<DateTime>("ToDate");
+
+                    b.Property<string>("ToTime")
                         .IsRequired();
 
                     b.HasKey("Id");

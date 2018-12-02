@@ -25,6 +25,12 @@ export class OrganizeAppointmentClient extends ServerClientBase {
         return this.httpClient.post<void>(this.baseUrl + '/CreateAppointmentFinder', { eventId, ...appointmentFinderInformation });
     }
 
+  public deleteAppointmentFinder(appointmentFinderId: number) {
+      return this.httpClient.delete<void>(this.baseUrl + '/DeleteAppointmentFinder', {
+        params: new HttpParams({ fromObject: { appointmentFinderId: appointmentFinderId.toString() } })
+      });
+  }
+
 	public setAppointmentResponse(appointmentId: number, userId: number, response?: AppointmentParticipationAnswer) {
 		return this.httpClient.post<void>(this.baseUrl + '/SetAppointmentResponse', { appointmentId, userId, response });
 	}

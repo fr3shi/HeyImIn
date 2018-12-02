@@ -145,7 +145,9 @@ namespace HeyImIn.WebApplication.Controllers
 									.Where(tsp => tsp.ParticipantId == currentUserId)
 									.Select(tsp => tsp.AppointmentParticipationAnswer)
 									.FirstOrDefault()
-							)).ToList()
+							)).ToList(),
+							a.FromDate,
+							a.ToDate
 						)).ToList(),
 					e.EventParticipations
 						.Where(ep => ep.ParticipantId == currentUserId)

@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
@@ -15,6 +16,11 @@ namespace HeyImIn.Database.Models
 		[Required]
 		[ForeignKey(nameof(Event))]
 		public int EventId { get; set; }
+
+		[Required]
+		public DateTime FromDate { get; set; }
+		[Required]
+		public DateTime ToDate { get; set; }
 
 		public virtual ICollection<TimeSlot> TimeSlots { get; set; }
 	}

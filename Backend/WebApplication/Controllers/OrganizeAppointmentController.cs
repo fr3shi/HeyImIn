@@ -156,7 +156,9 @@ namespace HeyImIn.WebApplication.Controllers
 
 			var finder = new AppointmentFinder
 			{
-				Event = @event
+				Event = @event,
+				FromDate = appointmentFinderInformationDto.FromDate,
+				ToDate = appointmentFinderInformationDto.ToDate
 			};
 
 			context.AppointmentFinders.Add(finder);
@@ -174,6 +176,43 @@ namespace HeyImIn.WebApplication.Controllers
 			await context.SaveChangesAsync();
 
 			_auditLogger.LogInformation("{0}(): Added {1} appointment finders to event {2}", nameof(CreateAppointmentFinder), appointmentFinderInformationDto.TimeSlots.Length, @event.Id);
+
+			return Ok();
+		}
+
+		[HttpDelete(nameof(DeleteAppointmentFinder))]
+		[ProducesResponseType(typeof(void), 200)]
+		public async Task<IActionResult> DeleteAppointmentFinder(int appointmentFinderId)
+		{
+			IDatabaseContext context = _getDatabaseContext();
+			AppointmentFinder appointmentFinder = await context.AppointmentFinders
+				.Include(a => a.Event)
+					.ThenInclude(e => e.Organizer)
+				.Include(a => a.TimeSlots)
+				.FirstOrDefaultAsync(e => e.Id == appointmentFinderId);
+
+			if (appointmentFinder == null)
+			{
+				return BadRequest(RequestStringMessages.AppointmentNotFound);
+			}
+
+			User currentUser = await HttpContext.GetCurrentUserAsync(context);
+
+			Event @event = appointmentFinder.Event;
+
+			if (@event.Organizer != currentUser)
+			{
+				_logger.LogInformation("{0}(): Tried to delete appointmentFinder {1}, which he's not organizing", nameof(DeleteAppointmentFinder), appointmentFinder.Id);
+
+				return BadRequest(RequestStringMessages.OrganizerRequired);
+			}
+
+			context.TimeSlots.RemoveRange(appointmentFinder.TimeSlots);
+			context.AppointmentFinders.Remove(appointmentFinder);
+
+			await context.SaveChangesAsync();
+
+			_auditLogger.LogInformation("{0}(): Canceled appointmentFinder {1}", nameof(DeleteAppointmentFinder), appointmentFinder.Id);
 
 			return Ok();
 		}

@@ -40,7 +40,9 @@ export class CreateAppointmentFinderDialog {
         }
 
 		this.dialogRef.close({
-			timeSlots
+		  timeSlots:	timeSlots,
+          toDate: toDate,
+          fromDate: fromDate
 		});
 	}
 }

@@ -66,7 +66,8 @@
 					<mat-expansion-panel *ngFor="let finder of eventDetails.actualAppointmentFinders; index as i; trackBy: getAppointmentFinderId" [expanded]="i === 0">
 						<mat-expansion-panel-header>
 							<mat-panel-title>
-								Foo Bar{{finder.fromDate | date:'short'}}
+								Appointment Finder
+								{{finder.fromDate | date:'shortDate'}} - {{finder.toDate | date:'shortDate'}}
 							</mat-panel-title>
 						</mat-expansion-panel-header>
 						<ng-template matExpansionPanelContent>

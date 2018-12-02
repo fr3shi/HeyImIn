@@ -133,7 +133,7 @@ export class EditEventComponent {
 		}
 	}
 
-	public async cancelAppointment(appointmentId: number) {
+	public async cancelAppointmentFinder(appointmentFinderId: number) {
 		const result = await this.dialog
 			.open(AreYouSureDialogComponent, {
 				data: 'Möchten Sie diesen Termin wirklich absagen?',
@@ -141,11 +141,11 @@ export class EditEventComponent {
 			}).afterClosed().toPromise();
 
 			if (result) {
-				this.organizeAppointmentServer.deleteAppointment(appointmentId).subscribe(
+				this.organizeAppointmentServer.deleteAppointmentFinder(appointmentFinderId).subscribe(
 					() => {
 						// Remove appointment from local list
-						this.eventDetails.upcomingAppointments =
-							this.eventDetails.upcomingAppointments.filter(u => u.appointmentId !== appointmentId);
+						this.eventDetails.actualAppointmentFinders =
+							this.eventDetails.actualAppointmentFinders.filter(u => u.appointmentFinderId !== appointmentFinderId);
 					}
 				);
 			}
